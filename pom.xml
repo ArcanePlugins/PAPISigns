@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.mrivanplays</groupId>
+  <artifactId>papi-signs</artifactId>
+  <version>1.0.0-SNAPSHOT</version>
+
+  <name>PAPI-Signs</name>
+  <description>PlaceholderAPI support for signs</description>
+
+  <properties>
+    <maven.compiler.source>17</maven.compiler.source>
+    <maven.compiler.target>17</maven.compiler.target>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+
+    <paper.version>1.19.4-R0.1-SNAPSHOT</paper.version>
+    <papi.version>2.11.3</papi.version>
+    <annotationconfig.version>3.0.2-SNAPSHOT</annotationconfig.version>
+    <cloud.version>1.8.3</cloud.version>
+  </properties>
+
+  <repositories>
+    <repository>
+      <id>papermc</id>
+      <url>https://repo.papermc.io/repository/maven-public/</url>
+    </repository>
+    <repository>
+      <id>placeholderapi</id>
+      <url>https://repo.extendedclip.com/content/repositories/placeholderapi/</url>
+    </repository>
+    <repository>
+      <id>ivan</id>
+      <url>https://repo.mrivanplays.com/repository/ivan/</url>
+    </repository>
+  </repositories>
+
+  <dependencies>
+    <dependency>
+      <groupId>io.papermc.paper</groupId>
+      <artifactId>paper-api</artifactId>
+      <version>${paper.version}</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>me.clip</groupId>
+      <artifactId>placeholderapi</artifactId>
+      <version>${papi.version}</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.mrivanplays</groupId>
+      <artifactId>annotationconfig-yaml</artifactId>
+      <version>${annotationconfig.version}</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>cloud.commandframework</groupId>
+      <artifactId>cloud-paper</artifactId>
+      <version>${cloud.version}</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>cloud.commandframework</groupId>
+      <artifactId>cloud-minecraft-extras</artifactId>
+      <version>${cloud.version}</version>
+      <scope>provided</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <defaultGoal>clean package</defaultGoal>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>3.3.0</version>
+        <configuration>
+          <archive>
+            <manifestEntries>
+              <cloudVersion>${cloud.version}</cloudVersion>
+              <acVersion>${annotationconfig.version}</acVersion>
+            </manifestEntries>
+          </archive>
+        </configuration>
+      </plugin>
+    </plugins>
+    <resources>
+      <resource>
+        <directory>src/main/resources</directory>
+        <filtering>true</filtering>
+      </resource>
+    </resources>
+  </build>
+
+</project>

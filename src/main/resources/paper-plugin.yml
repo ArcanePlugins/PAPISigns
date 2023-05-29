@@ -1,0 +1,11 @@
+name: PAPISigns
+version: ${project.version}
+description: ${project.description}
+main: com.mrivanplays.papisigns.PapiSigns
+loader: com.mrivanplays.papisigns.PapiSignsLoader
+api-version: '1.19'
+has-open-classloader: true
+
+dependencies:
+  - name: PlaceholderAPI
+    required: true
