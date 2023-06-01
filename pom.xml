@@ -6,7 +6,7 @@
 
   <groupId>com.mrivanplays</groupId>
   <artifactId>papi-signs</artifactId>
-  <version>1.0.0</version>
+  <version>1.0.1-SNAPSHOT</version>
 
   <name>PAPI-Signs</name>
   <description>PlaceholderAPI support for signs</description>

@@ -1,4 +1,4 @@
-package com.mrivanplays.papisigns;
+package com.mrivanplays.papisigns.loader;
 
 import cloud.commandframework.bukkit.CloudBukkitCapabilities;
 import cloud.commandframework.execution.CommandExecutionCoordinator;
@@ -10,6 +10,9 @@ import com.mrivanplays.annotationconfig.core.resolver.settings.NullReadHandleOpt
 import com.mrivanplays.annotationconfig.core.resolver.settings.Settings;
 import com.mrivanplays.annotationconfig.core.serialization.SerializerRegistry;
 import com.mrivanplays.annotationconfig.yaml.YamlConfig;
+import com.mrivanplays.papisigns.listener.PlaceholderUpdateListener;
+import com.mrivanplays.papisigns.command.BaseCommand;
+import com.mrivanplays.papisigns.data.PSConfig;
 import java.io.File;
 import java.util.function.Function;
 import java.util.logging.Level;

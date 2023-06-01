@@ -1,4 +1,4 @@
-package com.mrivanplays.papisigns;
+package com.mrivanplays.papisigns.command;
 
 import cloud.commandframework.ArgumentDescription;
 import cloud.commandframework.CommandHelpHandler;
@@ -7,6 +7,11 @@ import cloud.commandframework.arguments.standard.StringArgument;
 import cloud.commandframework.context.CommandContext;
 import cloud.commandframework.minecraft.extras.TextColorArgument;
 import cloud.commandframework.paper.PaperCommandManager;
+import com.mrivanplays.papisigns.data.PSConfig;
+import com.mrivanplays.papisigns.data.SignData;
+import com.mrivanplays.papisigns.data.SignDataType;
+import com.mrivanplays.papisigns.data.SingleSignData;
+import com.mrivanplays.papisigns.loader.PapiSigns;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;

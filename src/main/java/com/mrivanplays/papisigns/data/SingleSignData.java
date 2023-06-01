@@ -1,4 +1,4 @@
-package com.mrivanplays.papisigns;
+package com.mrivanplays.papisigns.data;
 
 import net.kyori.adventure.text.format.TextColor;
 

@@ -1,4 +1,4 @@
-package com.mrivanplays.papisigns;
+package com.mrivanplays.papisigns.data;
 
 import cloud.commandframework.minecraft.extras.MinecraftHelp;
 import cloud.commandframework.minecraft.extras.MinecraftHelp.HelpColors;

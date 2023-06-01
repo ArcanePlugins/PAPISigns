@@ -1,10 +1,13 @@
 name: PAPISigns
 version: ${project.version}
 description: ${project.description}
-main: com.mrivanplays.papisigns.PapiSigns
-loader: com.mrivanplays.papisigns.PapiSignsLoader
+main: com.mrivanplays.papisigns.loader.PapiSigns
+loader: com.mrivanplays.papisigns.loader.PapiSignsLoader
 api-version: '1.19'
 has-open-classloader: true
+# PAPI. however, has no Folia support (yet)
+# TODO: Needs deep tests, and a port of PAPI to Folia
+folia-supported: true
 
 dependencies:
   - name: PlaceholderAPI

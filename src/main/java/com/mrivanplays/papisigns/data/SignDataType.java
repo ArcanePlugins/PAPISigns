@@ -1,4 +1,4 @@
-package com.mrivanplays.papisigns;
+package com.mrivanplays.papisigns.data;
 
 import com.google.common.io.ByteStreams;
 import java.util.HashMap;
