@@ -16,6 +16,11 @@ import com.mrivanplays.papisigns.data.PSConfig;
 import java.io.File;
 import java.util.function.Function;
 import java.util.logging.Level;
+import java.util.stream.Stream;
+
+import com.mrivanplays.papisigns.provider.MiniPlaceholdersProvider;
+import com.mrivanplays.papisigns.provider.PlaceholderAPIProvider;
+import com.mrivanplays.papisigns.provider.PlaceholderProvider;
 import net.kyori.adventure.text.Component;
 import org.bukkit.NamespacedKey;
 import org.bukkit.command.CommandSender;
@@ -35,9 +40,26 @@ public class PapiSigns extends JavaPlugin {
 
   private PSConfig config;
   private MinecraftHelp<CommandSender> helpMenu;
+  private PlaceholderProvider placeholderProvider;
 
   @Override
   public void onEnable() {
+    this.placeholderProvider = Stream.of(
+        new MiniPlaceholdersProvider(),
+        new PlaceholderAPIProvider()
+    )
+        .filter(PlaceholderProvider::available)
+        .findFirst()
+        .orElse(null);
+
+    if (placeholderProvider == null) {
+        getLogger().info("No Placeholder Provider plugin found. Disabling plugin.");
+        getServer().getPluginManager().disablePlugin(this);
+        return;
+    } else {
+        getLogger().info("Using "+placeholderProvider+" as PlaceholderProvider");
+    }
+
     if (!getDataFolder().exists()) {
       getDataFolder().mkdirs();
     }
@@ -103,5 +125,9 @@ public class PapiSigns extends JavaPlugin {
 
   public MinecraftHelp<CommandSender> getHelpMenu() {
     return this.helpMenu;
+  }
+
+  public PlaceholderProvider provider() {
+      return this.placeholderProvider;
   }
 }

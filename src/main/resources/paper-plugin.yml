@@ -11,4 +11,6 @@ folia-supported: true
 
 dependencies:
   - name: PlaceholderAPI
-    required: true
+    required: false
+  - name: MiniPlaceholders
+    required: false

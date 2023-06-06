@@ -3,8 +3,6 @@ package com.mrivanplays.papisigns.listener;
 import com.mrivanplays.papisigns.data.SignDataType;
 import com.mrivanplays.papisigns.loader.PapiSigns;
 import java.util.ArrayList;
-import me.clip.placeholderapi.PlaceholderAPI;
-import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.block.Sign;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -41,14 +39,8 @@ public class PlaceholderUpdateListener implements Listener {
         if (singleData.placeholder() == null) {
           continue;
         }
-        var toSet =
-            LegacyComponentSerializer.legacyAmpersand()
-                .deserialize(PlaceholderAPI.setPlaceholders(player, singleData.placeholder()));
-        if (singleData.color() != null) {
-          lines.set(entry.getKey(), toSet.color(singleData.color()));
-        } else {
-          lines.set(entry.getKey(), toSet);
-        }
+        var toSet = plugin.provider().parse(player, singleData);
+        lines.set(entry.getKey(), toSet);
       }
       player.sendSignChange(stateLoc, lines);
     }

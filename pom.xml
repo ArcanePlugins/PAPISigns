@@ -20,6 +20,7 @@
     <papi.version>2.11.3</papi.version>
     <annotationconfig.version>3.0.2-SNAPSHOT</annotationconfig.version>
     <cloud.version>1.8.3</cloud.version>
+    <miniplaceholders.version>2.2.0</miniplaceholders.version>
   </properties>
 
   <repositories>
@@ -66,6 +67,12 @@
       <groupId>cloud.commandframework</groupId>
       <artifactId>cloud-minecraft-extras</artifactId>
       <version>${cloud.version}</version>
+      <scope>provided</scope>
+    </dependency>
+    <dependency>
+      <groupId>io.github.miniplaceholders</groupId>
+      <artifactId>miniplaceholders-api</artifactId>
+      <version>${miniplaceholders.version}</version>
       <scope>provided</scope>
     </dependency>
   </dependencies>
