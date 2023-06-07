@@ -53,11 +53,11 @@ public class PapiSigns extends JavaPlugin {
         .orElse(null);
 
     if (placeholderProvider == null) {
-        getLogger().info("No Placeholder Provider plugin found. Disabling plugin.");
+        getLogger().info("No compatible placeholder provider plugin found; disabling plugin.");
         getServer().getPluginManager().disablePlugin(this);
         return;
     } else {
-        getLogger().info("Using "+placeholderProvider+" as PlaceholderProvider");
+        getLogger().info("Using " + placeholderProvider + " as PlaceholderProvider");
     }
 
     if (!getDataFolder().exists()) {
