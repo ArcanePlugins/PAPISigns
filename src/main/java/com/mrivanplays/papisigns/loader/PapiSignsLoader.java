@@ -41,8 +41,7 @@ public class PapiSignsLoader implements PluginLoader {
             null));
     resolver.addDependency(
         new Dependency(
-            new DefaultArtifact(
-                "cloud.commandframework:cloud-paper:%s".formatted(cloudVersion)),
+            new DefaultArtifact("cloud.commandframework:cloud-paper:%s".formatted(cloudVersion)),
             null));
     resolver.addDependency(
         new Dependency(

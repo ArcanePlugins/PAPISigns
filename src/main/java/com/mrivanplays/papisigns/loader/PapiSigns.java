@@ -10,17 +10,16 @@ import com.mrivanplays.annotationconfig.core.resolver.settings.NullReadHandleOpt
 import com.mrivanplays.annotationconfig.core.resolver.settings.Settings;
 import com.mrivanplays.annotationconfig.core.serialization.SerializerRegistry;
 import com.mrivanplays.annotationconfig.yaml.YamlConfig;
-import com.mrivanplays.papisigns.listener.PlaceholderUpdateListener;
 import com.mrivanplays.papisigns.command.BaseCommand;
 import com.mrivanplays.papisigns.data.PSConfig;
+import com.mrivanplays.papisigns.listener.PlaceholderUpdateListener;
+import com.mrivanplays.papisigns.provider.MiniPlaceholdersProvider;
+import com.mrivanplays.papisigns.provider.PlaceholderAPIProvider;
+import com.mrivanplays.papisigns.provider.PlaceholderProvider;
 import java.io.File;
 import java.util.function.Function;
 import java.util.logging.Level;
 import java.util.stream.Stream;
-
-import com.mrivanplays.papisigns.provider.MiniPlaceholdersProvider;
-import com.mrivanplays.papisigns.provider.PlaceholderAPIProvider;
-import com.mrivanplays.papisigns.provider.PlaceholderProvider;
 import net.kyori.adventure.text.Component;
 import org.bukkit.NamespacedKey;
 import org.bukkit.command.CommandSender;
@@ -44,20 +43,18 @@ public class PapiSigns extends JavaPlugin {
 
   @Override
   public void onEnable() {
-    this.placeholderProvider = Stream.of(
-        new MiniPlaceholdersProvider(),
-        new PlaceholderAPIProvider()
-    )
-        .filter(PlaceholderProvider::available)
-        .findFirst()
-        .orElse(null);
+    this.placeholderProvider =
+        Stream.of(new MiniPlaceholdersProvider(), new PlaceholderAPIProvider())
+            .filter(PlaceholderProvider::available)
+            .findFirst()
+            .orElse(null);
 
     if (placeholderProvider == null) {
-        getLogger().info("No compatible placeholder provider plugin found; disabling plugin.");
-        getServer().getPluginManager().disablePlugin(this);
-        return;
+      getLogger().info("No compatible placeholder provider plugin found; disabling plugin.");
+      getServer().getPluginManager().disablePlugin(this);
+      return;
     } else {
-        getLogger().info("Using " + placeholderProvider + " as PlaceholderProvider");
+      getLogger().info("Using " + placeholderProvider + " as PlaceholderProvider");
     }
 
     if (!getDataFolder().exists()) {
@@ -128,6 +125,6 @@ public class PapiSigns extends JavaPlugin {
   }
 
   public PlaceholderProvider provider() {
-      return this.placeholderProvider;
+    return this.placeholderProvider;
   }
 }

@@ -141,10 +141,13 @@ public class PSConfig {
         Component.text("Line changed successfully!", NamedTextColor.GREEN);
 
     @Key("color-changed-success")
-    private Component colorChangedSuccess = Component.text("Color changed successfully!", NamedTextColor.GREEN);
+    private Component colorChangedSuccess =
+        Component.text("Color changed successfully!", NamedTextColor.GREEN);
 
     @Key("warning-placeholder-not-set")
-    private Component warningNotSet = Component.text("WARNING: Placeholder not set. You may want to set a placeholder, otherwise the changes won't affect the sign in any way.");
+    private Component warningNotSet =
+        Component.text(
+            "WARNING: Placeholder not set. You may want to set a placeholder, otherwise the changes won't affect the sign in any way.");
 
     @Key("reload-success")
     private Component reloadSuccess =
