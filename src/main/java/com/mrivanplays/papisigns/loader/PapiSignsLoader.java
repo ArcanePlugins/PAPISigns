@@ -37,17 +37,17 @@ public class PapiSignsLoader implements PluginLoader {
     resolver.addDependency(
         new Dependency(
             new DefaultArtifact(
-                String.format("com.mrivanplays:annotationconfig-yaml:%s", annotatedConfigVersion)),
+                "com.mrivanplays:annotationconfig-yaml:%s".formatted(annotatedConfigVersion)),
             null));
     resolver.addDependency(
         new Dependency(
             new DefaultArtifact(
-                String.format("cloud.commandframework:cloud-paper:%s", cloudVersion)),
+                "cloud.commandframework:cloud-paper:%s".formatted(cloudVersion)),
             null));
     resolver.addDependency(
         new Dependency(
             new DefaultArtifact(
-                String.format("cloud.commandframework:cloud-minecraft-extras:%s", cloudVersion)),
+                "cloud.commandframework:cloud-minecraft-extras:%s".formatted(cloudVersion)),
             null));
 
     classpathBuilder.addLibrary(resolver);
