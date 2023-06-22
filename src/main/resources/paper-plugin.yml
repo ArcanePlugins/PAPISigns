@@ -9,6 +9,10 @@ has-open-classloader: true
 # TODO: Needs deep tests, and a port of PAPI to Folia
 folia-supported: true
 
+load-after:
+  - name: PlaceholderAPI
+  - name: MiniPlaceholders
+
 dependencies:
   - name: PlaceholderAPI
     required: false

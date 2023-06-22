@@ -2,8 +2,10 @@ package com.mrivanplays.papisigns.listener;
 
 import com.mrivanplays.papisigns.data.SignDataType;
 import com.mrivanplays.papisigns.loader.PapiSigns;
+import com.mrivanplays.papisigns.util.SignUpdates;
 import java.util.ArrayList;
 import org.bukkit.block.Sign;
+import org.bukkit.block.sign.Side;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
@@ -33,16 +35,19 @@ public class PlaceholderUpdateListener implements Listener {
         continue;
       }
       var signData = dataContainer.get(PapiSigns.TAGGED_SIGNS_KEY, SignDataType.INSTANCE);
-      var lines = new ArrayList<>(sign.lines());
       for (var entry : signData.data().entrySet()) {
-        var singleData = entry.getValue();
-        if (singleData.placeholder() == null) {
-          continue;
+        var signSide = sign.getSide(entry.getKey());
+        var lines = signSide.lines();
+        for (var signDataEntry : entry.getValue().entrySet()) {
+          var singleData = signDataEntry.getValue();
+          if (singleData.placeholder() == null) {
+            continue;
+          }
+          var toSet = plugin.provider().parse(player, singleData);
+          lines.set(signDataEntry.getKey(), toSet);
         }
-        var toSet = plugin.provider().parse(player, singleData);
-        lines.set(entry.getKey(), toSet);
+        SignUpdates.sendSignChange(player, lines, stateLoc, entry.getKey());
       }
-      player.sendSignChange(stateLoc, lines);
     }
   }
 }

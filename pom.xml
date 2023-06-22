@@ -16,7 +16,7 @@
     <maven.compiler.target>17</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-    <paper.version>1.19.4-R0.1-SNAPSHOT</paper.version>
+    <paper.version>1.20.1-R0.1-SNAPSHOT</paper.version>
     <papi.version>2.11.3</papi.version>
     <annotationconfig.version>3.0.2-SNAPSHOT</annotationconfig.version>
     <cloud.version>1.8.3</cloud.version>
@@ -24,6 +24,10 @@
   </properties>
 
   <repositories>
+    <repository>
+      <id>nms-repo</id>
+      <url>https://repo.codemc.io/repository/nms/</url>
+    </repository>
     <repository>
       <id>papermc</id>
       <url>https://repo.papermc.io/repository/maven-public/</url>
@@ -43,6 +47,17 @@
       <groupId>io.papermc.paper</groupId>
       <artifactId>paper-api</artifactId>
       <version>${paper.version}</version>
+      <scope>provided</scope>
+    </dependency>
+    <!--
+    Since there is no api to send fake sign changes on sign side basis,
+    unfortunately, we currently have to use NMS for that
+    -->
+    <dependency>
+      <groupId>org.spigotmc</groupId>
+      <artifactId>spigot</artifactId>
+      <version>${paper.version}</version>
+      <classifier>remapped-mojang</classifier>
       <scope>provided</scope>
     </dependency>
     <dependency>
@@ -92,6 +107,39 @@
             </manifestEntries>
           </archive>
         </configuration>
+      </plugin>
+      <plugin>
+        <groupId>net.md-5</groupId>
+        <artifactId>specialsource-maven-plugin</artifactId>
+        <version>1.2.2</version>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>remap</goal>
+            </goals>
+            <id>remap-obf</id>
+            <configuration>
+              <srgIn>org.spigotmc:minecraft-server:${paper.version}:txt:maps-mojang</srgIn>
+              <reverse>true</reverse>
+              <remappedDependencies>org.spigotmc:spigot:${paper.version}:jar:remapped-mojang</remappedDependencies>
+              <remappedArtifactAttached>true</remappedArtifactAttached>
+              <remappedClassifierName>remapped-obf</remappedClassifierName>
+            </configuration>
+          </execution>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>remap</goal>
+            </goals>
+            <id>remap-spigot</id>
+            <configuration>
+              <inputFile>${project.build.directory}/${project.artifactId}-${project.version}-remapped-obf.jar</inputFile>
+              <srgIn>org.spigotmc:minecraft-server:${paper.version}:csrg:maps-spigot</srgIn>
+              <remappedDependencies>org.spigotmc:spigot:${paper.version}:jar:remapped-obf</remappedDependencies>
+            </configuration>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
     <resources>

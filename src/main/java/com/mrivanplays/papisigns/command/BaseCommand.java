@@ -2,6 +2,7 @@ package com.mrivanplays.papisigns.command;
 
 import cloud.commandframework.ArgumentDescription;
 import cloud.commandframework.CommandHelpHandler;
+import cloud.commandframework.arguments.standard.EnumArgument;
 import cloud.commandframework.arguments.standard.IntegerArgument;
 import cloud.commandframework.arguments.standard.StringArgument;
 import cloud.commandframework.context.CommandContext;
@@ -20,6 +21,7 @@ import java.util.function.BiFunction;
 import java.util.stream.Collectors;
 import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.block.Sign;
+import org.bukkit.block.sign.Side;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -38,6 +40,10 @@ public class BaseCommand {
                 ArgumentDescription.of("Set a line of a facing sign to the placeholder inputted"))
             .senderType(Player.class)
             .argument(
+                EnumArgument.<CommandSender, Side>builder(Side.class, "Side").asRequired().build(),
+                ArgumentDescription.of(
+                    "The side of the sign of which you want the placeholder to apply"))
+            .argument(
                 IntegerArgument.<CommandSender>builder("line")
                     .withMin(1)
                     .withMax(4)
@@ -51,6 +57,7 @@ public class BaseCommand {
             .handler(
                 context -> {
                   var player = (Player) context.getSender();
+                  Side signSide = context.get("Side");
                   var block = player.getTargetBlockExact(config.getMaxDistance());
                   if (!(block.getState() instanceof Sign sign)) {
                     player.sendMessage(plugin.getPSConfig().getMessages().getNotASign());
@@ -69,20 +76,29 @@ public class BaseCommand {
                   if (dataContainer.has(PapiSigns.TAGGED_SIGNS_KEY)) {
                     var signData =
                         dataContainer.get(PapiSigns.TAGGED_SIGNS_KEY, SignDataType.INSTANCE);
-                    if (signData.data().containsKey(line)) {
-                      var singleSignData = signData.data().get(line);
-                      signData
-                          .data()
-                          .replace(line, new SingleSignData(placeholder, singleSignData.color()));
+                    if (signData.data().containsKey(signSide)) {
+                      var signDataData = signData.data().get(signSide);
+                      if (signDataData.containsKey(line)) {
+                        var singleSignData = signDataData.get(line);
+                        signDataData.replace(
+                            line, new SingleSignData(placeholder, singleSignData.color()));
+                      } else {
+                        signDataData.put(line, new SingleSignData(placeholder, null));
+                      }
+                      signData.data().replace(signSide, signDataData);
                     } else {
-                      signData.data().put(line, new SingleSignData(placeholder, null));
+                      Map<Integer, SingleSignData> map = new HashMap<>();
+                      map.put(line, new SingleSignData(placeholder, null));
+                      signData.data().put(signSide, map);
                     }
                     dataContainer.set(PapiSigns.TAGGED_SIGNS_KEY, SignDataType.INSTANCE, signData);
                   } else {
                     Map<Integer, SingleSignData> map = new HashMap<>();
                     map.put(line, new SingleSignData(placeholder, null));
+                    Map<Side, Map<Integer, SingleSignData>> mapRet = new HashMap<>();
+                    mapRet.put(signSide, map);
                     dataContainer.set(
-                        PapiSigns.TAGGED_SIGNS_KEY, SignDataType.INSTANCE, new SignData(map));
+                        PapiSigns.TAGGED_SIGNS_KEY, SignDataType.INSTANCE, new SignData(mapRet));
                   }
                   sign.update();
 
@@ -100,6 +116,10 @@ public class BaseCommand {
                 ArgumentDescription.of("Set the specified line's color of the facing sign"))
             .senderType(Player.class)
             .argument(
+                EnumArgument.<CommandSender, Side>builder(Side.class, "Side").asRequired().build(),
+                ArgumentDescription.of(
+                    "The side of the sign of which you want the placeholder to apply"))
+            .argument(
                 IntegerArgument.<CommandSender>builder("line")
                     .withMin(1)
                     .withMax(4)
@@ -111,6 +131,7 @@ public class BaseCommand {
             .handler(
                 context -> {
                   var player = (Player) context.getSender();
+                  Side signSide = context.get("Side");
                   var block = player.getTargetBlockExact(config.getMaxDistance());
                   if (!(block.getState() instanceof Sign sign)) {
                     player.sendMessage(plugin.getPSConfig().getMessages().getNotASign());
@@ -124,23 +145,32 @@ public class BaseCommand {
                   if (dataContainer.has(PapiSigns.TAGGED_SIGNS_KEY)) {
                     var signData =
                         dataContainer.get(PapiSigns.TAGGED_SIGNS_KEY, SignDataType.INSTANCE);
-                    if (signData.data().containsKey(line)) {
-                      var singleSignData = signData.data().get(line);
-                      signData
-                          .data()
-                          .replace(
-                              line, new SingleSignData(singleSignData.placeholder(), textColor));
+                    if (signData.data().containsKey(signSide)) {
+                      var signDataData = signData.data().get(signSide);
+                      if (signDataData.containsKey(line)) {
+                        var singleSignData = signDataData.get(line);
+                        signDataData.replace(
+                            line, new SingleSignData(singleSignData.placeholder(), textColor));
+                      } else {
+                        player.sendMessage(plugin.getPSConfig().getMessages().getWarningNotSet());
+                        signDataData.put(line, new SingleSignData(null, textColor));
+                      }
+                      signData.data().replace(signSide, signDataData);
                     } else {
                       player.sendMessage(plugin.getPSConfig().getMessages().getWarningNotSet());
-                      signData.data().put(line, new SingleSignData(null, textColor));
+                      Map<Integer, SingleSignData> map = new HashMap<>();
+                      map.put(line, new SingleSignData(null, textColor));
+                      signData.data().put(signSide, map);
                     }
                     dataContainer.set(PapiSigns.TAGGED_SIGNS_KEY, SignDataType.INSTANCE, signData);
                   } else {
                     player.sendMessage(plugin.getPSConfig().getMessages().getWarningNotSet());
                     Map<Integer, SingleSignData> map = new HashMap<>();
                     map.put(line, new SingleSignData(null, textColor));
+                    Map<Side, Map<Integer, SingleSignData>> mapRet = new HashMap<>();
+                    mapRet.put(signSide, map);
                     dataContainer.set(
-                        PapiSigns.TAGGED_SIGNS_KEY, SignDataType.INSTANCE, new SignData(map));
+                        PapiSigns.TAGGED_SIGNS_KEY, SignDataType.INSTANCE, new SignData(mapRet));
                   }
                   sign.update();
 
