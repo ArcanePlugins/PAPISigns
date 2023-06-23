@@ -52,7 +52,7 @@ public class BaseCommand {
                     .build(),
                 ArgumentDescription.of("The line to manipulate"))
             .argument(
-                StringArgument.<CommandSender>builder("placeholder").single().asRequired().build(),
+                StringArgument.<CommandSender>builder("placeholder").greedy().asRequired().build(),
                 ArgumentDescription.of("The placeholder you want to be displayed"))
             .handler(
                 context -> {
