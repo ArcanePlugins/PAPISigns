@@ -54,7 +54,7 @@ public class PapiSigns extends JavaPlugin {
       getServer().getPluginManager().disablePlugin(this);
       return;
     } else {
-      getLogger().info("Using " + placeholderProvider + " as PlaceholderProvider");
+      getLogger().info("Using " + placeholderProvider.name() + " as PlaceholderProvider");
     }
 
     if (!getDataFolder().exists()) {
