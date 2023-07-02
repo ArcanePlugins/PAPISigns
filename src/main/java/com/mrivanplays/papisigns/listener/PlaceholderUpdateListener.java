@@ -4,6 +4,10 @@ import com.mrivanplays.papisigns.data.SignDataType;
 import com.mrivanplays.papisigns.loader.PapiSigns;
 import com.mrivanplays.papisigns.util.SignUpdates;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import net.kyori.adventure.text.Component;
 import org.bukkit.block.Sign;
 import org.bukkit.block.sign.Side;
 import org.bukkit.event.EventHandler;
@@ -35,9 +39,10 @@ public class PlaceholderUpdateListener implements Listener {
         continue;
       }
       var signData = dataContainer.get(PapiSigns.TAGGED_SIGNS_KEY, SignDataType.INSTANCE);
+      Map<Side, List<Component>> updatesMap = new HashMap<>();
       for (var entry : signData.data().entrySet()) {
         var signSide = sign.getSide(entry.getKey());
-        var lines = signSide.lines();
+        var lines = new ArrayList<>(signSide.lines());
         for (var signDataEntry : entry.getValue().entrySet()) {
           var singleData = signDataEntry.getValue();
           if (singleData.placeholder() == null) {
@@ -46,8 +51,9 @@ public class PlaceholderUpdateListener implements Listener {
           var toSet = plugin.provider().parse(player, singleData);
           lines.set(signDataEntry.getKey(), toSet);
         }
-        SignUpdates.sendSignChange(player, lines, stateLoc, entry.getKey());
+        updatesMap.put(entry.getKey(), lines);
       }
+      SignUpdates.sendSignChange(player, updatesMap, stateLoc, sign);
     }
   }
 }
